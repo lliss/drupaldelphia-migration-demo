@@ -1,0 +1,4 @@
+name = Drupaldelphia Migrate Module Migration
+description = Migrates data from using the migrate module.
+core = 7.x
+package = Drupaldelphia Demos

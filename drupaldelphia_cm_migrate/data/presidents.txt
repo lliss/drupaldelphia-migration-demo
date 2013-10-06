@@ -1,0 +1,44 @@
+George Washington	 
+John Adams
+Thomas Jefferson	 
+James Buchanan
+James Madison	 
+Abraham Lincoln
+James Monroe	 
+Andrew Johnson
+John Quincy Adams	 
+Ulysses S. Grant
+Andrew Jackson	 
+Rutherford B. Hayes
+Martin Van Buren	 
+James Garfield
+William Henry Harrison	 
+Chester A. Arthur
+John Tyler	 
+Grover Cleveland
+James K. Polk	 
+Benjamin Harrison
+Zachary Taylor	 
+Grover Cleveland
+Millard Fillmore	 
+William McKinley
+Franklin Pierce	
+Theodore Roosevelt
+John F. Kennedy
+William Howard Taft	 
+Lyndon B. Johnson
+Woodrow Wilson	 
+Richard M. Nixon
+Warren G. Harding	 
+Gerald R. Ford
+Calvin Coolidge	 
+James Carter
+Herbert Hoover	 
+Ronald Reagan
+Franklin D. Roosevelt	 
+George H. W. Bush
+Harry S. Truman	 
+William J. Clinton
+Dwight D. Eisenhower	
+George W. Bush
+Barack Obama

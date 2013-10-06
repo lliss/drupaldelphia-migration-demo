@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * Custom import functions for a drupaldelphia demo.
+ */
+
+/**
+ * Migrate Poems and create a new user.
+ */
+function drupaldelphia_cm_migrate_execute_import() {
+  // Create new user to make the author of the content.
+  $user = new stdClass();
+  $user->name = 'Walter';
+  $user->status = 1;
+  $password = 'secret';
+  require_once(DRUPAL_ROOT . '/includes/password.inc');
+  $user->pass = user_hash_password($password);
+  $user->mail = 'walter@whitman.com';
+  user_save($user);
+  $uid = $user->uid;
+
+  // Get all the poems from the whitman directory.
+  $path = drupal_get_path('module', 'drupaldelphia_cm_migrate');
+  $files = file_scan_directory($path . '/whitman_poems', '/.txt$/');
+
+  // Loop over the files, get the title from the first line of each.
+  // Then build a node object and save it.
+  foreach ($files as $filename => $data) {
+    $poem = file($filename);
+    $title = trim($poem[0]);
+    unset($poem[0]);
+    unset($poem[1]);
+    $body = implode('<br />', $poem);
+
+    $node = new stdClass();
+    $node->title = $title;
+    $node->body[LANGUAGE_NONE][0]['value'] = $body;
+    $node->body[LANGUAGE_NONE][0]['format'] = 'filtered_html';
+    $node->type = 'article';
+    $node->uid = $uid;
+    node_save($node);
+  }
+}

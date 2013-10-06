@@ -1,0 +1,4 @@
+name = Drupaldelphia Custom Migration
+description = Migrates data from text files and creates nodes.
+core = 7.x
+package = Drupaldelphia Demos

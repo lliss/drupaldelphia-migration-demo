@@ -18,7 +18,7 @@ abstract class PoemMigration extends DynamicMigration {
 class PoemTaxonomyMigration extends PoemMigration {
   public function __construct() {
     parent::__construct();
-    $this->description = t('');
+    $this->description = t('Creates taxonomy terms from legacy genres table.');
 
     // And, pass schema definitions for the primary keys of the source and
     // destination - we need to be explicit for our source, but the destination
@@ -50,7 +50,7 @@ class PoemTaxonomyMigration extends PoemMigration {
 class PoemUserMigration extends PoemMigration {
   public function __construct() {
     parent::__construct();
-    $this->description = t('');
+    $this->description = t('Migrates users from legacy database.');
     $this->map = new MigrateSQLMap($this->machineName,
         array(
           'id' => array(
@@ -75,7 +75,7 @@ class PoemUserMigration extends PoemMigration {
 class PoemNodeMigration extends PoemMigration {
   public function __construct() {
     parent::__construct();
-    $this->description = t('');
+    $this->description = t('Creates Poem articles from legacy poems database.');
 
     $this->dependencies = array('PoemTaxonomy', 'PoemUser');
 

@@ -45,12 +45,48 @@ class PoemTaxonomyMigration extends PoemMigration {
   }
 }
 
+class PoemFileMigration extends PoemMigration {
+  public function __construct() {
+    parent::__construct();
+    $this->description = t('Migrates files from legacy database.');
+    $this->map = new MigrateSQLMap($this->machineName,
+        array(
+          'id' => array(
+            'type' => 'int',
+            'not null' => TRUE,
+            'description' => 'user id.',
+          ),
+        ),
+        MigrateDestinationFile::getKeySchema()
+    );
+    $query = Database::getConnection('default', 'legacy')->select('users', 'u')->fields('u', array('id', 'photo'));
+    $this->source = new MigrateSourceSQL($query);
+    $this->destination = new MigrateDestinationFile(array(
+      'copy_file' => false,
+      'preserve_files' => true,
+    ));
+
+
+    $this->addFieldMapping('value', 'photo')->callbacks(array($this, 'getPhotoURL'));
+    $this->addFieldMapping('destination_dir', 'picture_dir');
+  }
+
+  protected function getPhotoURL($filename) {
+    print_r('https://raw.github.com/lliss/drupaldelphia-migration-demo/master/drupaldelphia_mm_migrate/data/' . $filename);
+    return 'https://raw.github.com/lliss/drupaldelphia-migration-demo/master/drupaldelphia_mm_migrate/data/' . $filename;
+  }
+  public function prepareRow($row) {
+    $row->picture_dir = 'pictures';
+  }
+}
+
 /**
  */
 class PoemUserMigration extends PoemMigration {
   public function __construct() {
     parent::__construct();
     $this->description = t('Migrates users from legacy database.');
+    $this->dependencies = array('PoemFile');
     $this->map = new MigrateSQLMap($this->machineName,
         array(
           'id' => array(
@@ -66,6 +102,7 @@ class PoemUserMigration extends PoemMigration {
     $this->destination = new MigrateDestinationUser();
 
     $this->addSimpleMappings(array('name'));
+    $this->addFieldMapping('picture', 'id')->sourceMigration('PoemFile');
   }
 }
 
@@ -76,7 +113,7 @@ class PoemNodeMigration extends PoemMigration {
     parent::__construct();
     $this->description = t('Creates Poem articles from legacy poems database.');
 
-    $this->dependencies = array('PoemTaxonomy', 'PoemUser');
+    $this->dependencies = array('PoemTaxonomy', 'PoemUser', 'PoemFile');
 
     $this->map = new MigrateSQLMap($this->machineName,
       array(
@@ -102,6 +139,7 @@ class PoemNodeMigration extends PoemMigration {
     $this->addFieldMapping('uid', 'user_id')->sourceMigration('PoemUser');
     $this->addFieldMapping('body', 'poem');
 
-    $this->addFieldMapping('field_image', 'image');
+    $this->addFieldMapping('field_image', 'photo');
+    $this->addFieldMapping('field_image:source_dir')->defaultValue(drupal_get_path('module', 'drupaldelphia_mm_migrate') . '/data');
   }
 }

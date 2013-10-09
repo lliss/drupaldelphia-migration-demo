@@ -14,6 +14,7 @@ function drupaldelphia_mm_migrate_migrate_api() {
       'PoemTaxonomy' => array('class_name' => 'PoemTaxonomyMigration'),
       'PoemUser' => array('class_name' => 'PoemUserMigration'),
       'PoemNode' => array('class_name' => 'PoemNodeMigration'),
+      'PoemFile' => array('class_name' => 'PoemFileMigration'),
     ),
   );
   return $api;

@@ -34,7 +34,7 @@ class PoemTaxonomyMigration extends PoemMigration {
         MigrateDestinationTerm::getKeySchema()
       );
 
-    $query = db_select('genre', 'g')->fields('g', array('name'));
+    $query = Database::getConnection('default', 'legacy')->select('genres', 'g')->fields('g', array('id', 'name'));
 
     $this->source = new MigrateSourceSQL($query);
 
@@ -56,17 +56,16 @@ class PoemUserMigration extends PoemMigration {
           'id' => array(
             'type' => 'int',
             'not null' => TRUE,
-            'description' => 'user id.'
+            'description' => 'user id.',
           ),
         ),
         MigrateDestinationUser::getKeySchema()
     );
-    $query = db_select('users', 'u')->fields('u', array('name', 'photo'));
+    $query = Database::getConnection('default', 'legacy')->select('users', 'u')->fields('u', array('id', 'name', 'photo'));
     $this->source = new MigrateSourceSQL($query);
     $this->destination = new MigrateDestinationUser();
 
     $this->addSimpleMappings(array('name'));
-
   }
 }
 
@@ -90,15 +89,16 @@ class PoemNodeMigration extends PoemMigration {
       MigrateDestinationNode::getKeySchema()
     );
 
-    $query = db_select('poems', 'p')
-             ->fields('p', array('genre_id', 'user_id', 'title', 'poem', 'photo'));
+    $query = Database::getConnection('default', 'legacy')->select('poems', 'p')
+             ->fields('p', array('id', 'genre_id', 'user_id', 'title', 'poem', 'photo'));
 
 
+    $this->source = new MigrateSourceSQL($query);
     $this->destination = new MigrateDestinationNode('article');
 
     // Mapped fields
     $this->addFieldMapping('title', 'title');
-    #$this->addFieldMapping('', 'genre_id')->sourceMigration('PoemTaxonomy');
+    $this->addFieldMapping('field_genre', 'genre_id')->sourceMigration('PoemTaxonomy')->arguments(array('source_type' => 'tid'));
     $this->addFieldMapping('uid', 'user_id')->sourceMigration('PoemUser');
     $this->addFieldMapping('body', 'poem');
 

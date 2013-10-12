@@ -2,9 +2,11 @@
 
 /**
  * @file
+ * Migration classes related to poems.
  */
 
 /**
+ * Base poem migration class that we can extend.
  */
 abstract class PoemMigration extends DynamicMigration {
   public function __construct() {
@@ -14,6 +16,7 @@ abstract class PoemMigration extends DynamicMigration {
 }
 
 /**
+ * Migration class for Taxonomy terms.
  */
 class PoemTaxonomyMigration extends PoemMigration {
   public function __construct() {
@@ -49,6 +52,7 @@ class PoemTaxonomyMigration extends PoemMigration {
 }
 
 /**
+ * Migration class to migrate users to the new system.
  */
 class PoemUserMigration extends PoemMigration {
   public function __construct() {
@@ -77,6 +81,7 @@ class PoemUserMigration extends PoemMigration {
 }
 
 /**
+ * Imports poems from the poems table into article nodes.
  */
 class PoemNodeMigration extends PoemMigration {
   public function __construct() {
